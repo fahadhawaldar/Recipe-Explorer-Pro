@@ -1,14 +1,35 @@
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  useColorScheme,
+} from "react-native";
 import React from "react";
+import StyledView from "./StyledView";
+import StyledText from "./StyledText";
 
 type Props = {};
 
 const SearchInput = (props: Props) => {
+  const textColor = useColorScheme() === "dark" ? "#fff" : "#000";
+  const backgroundColor = useColorScheme() === "dark" ? "#000" : "#fff";
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Search</Text>
-      <TextInput style={styles.input} placeholder="Search" />
-    </View>
+    <StyledView style={styles.container}>
+      <StyledText style={styles.text}>Search</StyledText>
+      <TextInput
+        style={[
+          styles.input,
+          {
+            color: textColor,
+            backgroundColor,
+
+            borderColor: textColor,
+          },
+        ]}
+        placeholder="Search for a recipe"
+      />
+    </StyledView>
   );
 };
 
@@ -19,8 +40,7 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,
-    backgroundColor: "#fff",
-    borderRadius: 10,
+
     marginHorizontal: 20,
   },
   text: {
@@ -28,10 +48,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   input: {
-    borderWidth: 1,
+    height: 40,
+    borderWidth: 0.3,
     borderRadius: 8,
     padding: 10,
     fontSize: 16,
-    flex: 1,
+    // flex: 1,
   },
 });

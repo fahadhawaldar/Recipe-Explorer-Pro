@@ -1,7 +1,15 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableHighlight,
+} from "react-native";
 import React from "react";
 import { RecipeTypes } from "../types";
 import Fontisto from "@expo/vector-icons/Fontisto";
+import StyledText from "./StyledText";
+import { router } from "expo-router";
 
 type Props = {
   meal: RecipeTypes;
@@ -9,22 +17,29 @@ type Props = {
 
 const MealCard = ({ meal }: Props) => {
   return (
-    <View style={styles.main}>
-      <Image style={styles.image} source={{ uri: meal.image }} />
-      <View>
-        <Text style={styles.title}>{meal.name}</Text>
-        <View style={styles.category}>
-          <Text style={styles.categoryText}>{meal.mealType}</Text>
+    <TouchableHighlight
+      onPress={() => {
+        router.push(`/${meal.id}`);
+      }}
+      style={styles.main}
+    >
+      <>
+        <Image style={styles.image} source={{ uri: meal.image }} />
+        <View>
+          <StyledText style={styles.title}>{meal.name}</StyledText>
+          <View style={styles.category}>
+            <Text style={styles.categoryText}>{meal.mealType}</Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.heart}>
-        <Fontisto
-          name={false ? "heart" : "heart-alt"}
-          size={24}
-          color={false ? "red" : "#fff"}
-        />
-      </View>
-    </View>
+        <View style={styles.heart}>
+          <Fontisto
+            name={false ? "heart" : "heart-alt"}
+            size={24}
+            color={false ? "red" : "#fff"}
+          />
+        </View>
+      </>
+    </TouchableHighlight>
   );
 };
 
