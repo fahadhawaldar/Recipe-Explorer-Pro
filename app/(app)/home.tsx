@@ -5,6 +5,7 @@ import axios from "axios";
 import { mealDbAPI } from "@/src/utils/constants";
 import type { RecipeTypes } from "@/src/types";
 import MealCard from "@/src/components/MealCard";
+import SearchInput from "@/src/components/SearchInput";
 type Props = {};
 
 const Home = (props: Props) => {
@@ -25,6 +26,7 @@ const Home = (props: Props) => {
   return (
     <ProtectedRoute>
       <View style={styles.main}>
+        <SearchInput />
         {allRecipes.length > 0 ? (
           <FlatList
             style={{ paddingHorizontal: 20 }}
