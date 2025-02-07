@@ -7,11 +7,16 @@ import type { RecipeTypes } from "@/src/types";
 import MealCard from "@/src/components/MealCard";
 import SearchInput from "@/src/components/SearchInput";
 import StyledView from "@/src/components/StyledView";
+import StyledText from "@/src/components/StyledText";
+import Chips from "@/src/components/Chips";
 type Props = {};
 
 const Home = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [allRecipes, setAllRecipes] = useState<RecipeTypes[]>([]);
+  const [selectedFilter, setSelectedFilter] = useState<string>("");
+  const [filteredRecipes, setFilteredRecipes] = useState<RecipeTypes[]>([]);
+  const [filters, setFilters] = useState<string[]>([]);
   async function fetchMeals() {
     setIsLoading(true);
     try {
@@ -27,20 +32,70 @@ const Home = (props: Props) => {
   useEffect(() => {
     fetchMeals();
   }, []);
+
+  useEffect(() => {
+    if (selectedFilter) {
+      const filtered = allRecipes.filter((recipe) =>
+        recipe.mealType.includes(selectedFilter)
+      );
+      setFilteredRecipes(filtered);
+    } else {
+      setFilteredRecipes(allRecipes);
+    }
+  }, [selectedFilter, allRecipes]);
+
+  useEffect(() => {
+    const test = allRecipes.reduce((acc, curr) => {
+      acc.push(curr?.mealType);
+      return acc;
+    }, []);
+    const mealTypes = Array.from(new Set(test.flat()));
+    setFilters(mealTypes);
+  }, [allRecipes]);
   return (
     <ProtectedRoute>
       <StyledView style={styles.main}>
-        <SearchInput />
-        {allRecipes.length > 0 ? (
+        {/* <SearchInput /> */}
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          style={{ paddingHorizontal: 20, alignSelf: "center" }}
+          contentContainerStyle={{
+            gap: 20,
+            paddingVertical: 10,
+            // flex: 1,
+            justifyContent: "center",
+            // backgroundColor: "red",
+          }}
+          data={filters}
+          renderItem={({ item }) => (
+            <Chips
+              isSelected={selectedFilter === item}
+              text={item}
+              onPress={() => {
+                if (selectedFilter === item) {
+                  setSelectedFilter("");
+                  return;
+                }
+                setSelectedFilter(item);
+              }}
+            />
+          )}
+        />
+
+        <>
           <FlatList
             refreshControl={
               <RefreshControl refreshing={isLoading} onRefresh={fetchMeals} />
             }
             style={{ paddingHorizontal: 20 }}
             contentContainerStyle={{ gap: 20 }}
-            data={allRecipes}
+            data={filteredRecipes}
             renderItem={({ item }) => <MealCard meal={item} />}
             onEndReached={() => {
+              if (selectedFilter) {
+                return;
+              }
               const nextPage = Math.floor(allRecipes.length / 20) + 1;
               axios
                 .get(`${mealDbAPI}?limit=20&page=${nextPage}`)
@@ -51,9 +106,7 @@ const Home = (props: Props) => {
             onEndReachedThreshold={0.5}
             keyExtractor={(item, i) => item.id.toString() + 1 + i}
           />
-        ) : (
-          <Text>Loading...</Text>
-        )}
+        </>
       </StyledView>
     </ProtectedRoute>
   );
@@ -64,7 +117,6 @@ export default Home;
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-
     // backgroundColor: "#fff",
   },
 });

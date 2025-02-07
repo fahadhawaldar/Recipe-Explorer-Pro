@@ -2,7 +2,7 @@ import { StyleSheet, View, ViewStyle, useColorScheme } from "react-native";
 import React from "react";
 
 type Props = {
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[] | any;
   style?: ViewStyle;
 };
 

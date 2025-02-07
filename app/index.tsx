@@ -32,7 +32,7 @@ export default function Index() {
   // Redirect based on authentication state
   if (user) {
     // If user is logged in, redirect to home screen
-    return <Redirect href="/(app)/home" />;
+    return <Redirect href="/(tabs)/home" />;
   } else {
     // If user is not logged in, redirect to login screen
     return <Redirect href="/(auth)/login" />;

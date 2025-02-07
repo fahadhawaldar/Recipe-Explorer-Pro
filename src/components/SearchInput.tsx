@@ -9,15 +9,21 @@ import React from "react";
 import StyledView from "./StyledView";
 import StyledText from "./StyledText";
 
-type Props = {};
+type Props = {
+  searchText: string;
+  setSearchText: (text: string) => void;
+};
 
-const SearchInput = (props: Props) => {
+const SearchInput = ({ searchText, setSearchText }: Props) => {
   const textColor = useColorScheme() === "dark" ? "#fff" : "#000";
   const backgroundColor = useColorScheme() === "dark" ? "#000" : "#fff";
   return (
     <StyledView style={styles.container}>
       <StyledText style={styles.text}>Search</StyledText>
       <TextInput
+        ref={(node) => node?.focus()}
+        value={searchText}
+        onChangeText={setSearchText}
         style={[
           styles.input,
           {

@@ -1,16 +1,7 @@
-import {
-  StyleSheet,
-  Text,
-  TextStyle,
-  View,
-  useColorScheme,
-} from "react-native";
+import { StyleSheet, Text, TextProps, useColorScheme } from "react-native";
 import React from "react";
 
-type Props = {
-  children: React.ReactNode;
-  style?: TextStyle;
-};
+type Props = TextProps;
 
 const StyledText = (props: Props) => {
   const colorScheme = useColorScheme();
