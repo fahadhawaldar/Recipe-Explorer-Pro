@@ -4,17 +4,25 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Alert,
   StyleSheet,
   KeyboardAvoidingView,
-  ImageBackground,
   Platform,
+  Alert,
+  useColorScheme,
+  Image,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { auth } from "../_layout";
+import { accentColor, darkColor, lightColor } from "@/src/utils/color";
+import StyledText from "@/src/components/StyledText";
+import { styles } from "./login";
 
-export default function SignupScreen() {
+export default function SignUpScreen() {
+  const isDark = useColorScheme() === "dark";
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +33,6 @@ export default function SignupScreen() {
       Alert.alert("Error", "Please enter both email and password.");
       return;
     }
-
     try {
       setLoading(true);
       await createUserWithEmailAndPassword(auth, email, password);
@@ -39,79 +46,54 @@ export default function SignupScreen() {
   };
 
   return (
-    <ImageBackground
-      // source={require("../../assets/images/login-background.jpg")}
-      style={{
-        width: "100%",
-        height: "100%",
-        backgroundColor: "#fff",
-      }}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      style={[
+        styles.container,
+        { backgroundColor: isDark ? darkColor : lightColor },
+      ]}
     >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1 }}
-      >
-        <View style={styles.container}>
-          <Text style={styles.title}>Sign Up</Text>
+      <View style={styles.form}>
+        <Image
+          style={styles.image}
+          source={require("../../assets/images/Signup.jpg")}
+        />
+        <Text style={[styles.logo, { color: accentColor }]}>
+          Recipe Explorer Pro
+        </Text>
+        <StyledText style={styles.title}>Sign Up</StyledText>
 
-          <TextInput
-            placeholder="Email"
-            style={styles.input}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            value={email}
-            onChangeText={setEmail}
-          />
+        <TextInput
+          placeholder="Email"
+          style={[styles.input, { color: isDark ? "#fff" : "#333" }]}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+        />
 
-          <TextInput
-            placeholder="Password"
-            style={styles.input}
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
-          />
+        <TextInput
+          placeholder="Password"
+          style={[styles.input, { color: isDark ? "#fff" : "#333" }]}
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleSignup}
-            disabled={loading}
-          >
-            <Text style={styles.buttonText}>
-              {loading ? "Creating Account..." : "Sign Up"}
-            </Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "#3A7D44" }]}
+          onPress={handleSignup}
+          disabled={loading}
+        >
+          <Text style={styles.buttonText}>
+            {loading ? "Signing in..." : "Sign up"}
+          </Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => router.push("/(auth)/login")}>
-            <Text style={styles.link}>Already have an account? Login</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    </ImageBackground>
+        <TouchableOpacity onPress={() => router.replace("/(auth)/login")}>
+          <Text style={styles.link}>Already have an account? Login</Text>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-  },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
-  input: {
-    width: "100%",
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-  },
-  button: {
-    backgroundColor: "#28a745",
-    padding: 10,
-    borderRadius: 8,
-    width: "100%",
-    alignItems: "center",
-  },
-  buttonText: { color: "#fff", fontSize: 16 },
-  link: { marginTop: 10, color: "#007bff" },
-});

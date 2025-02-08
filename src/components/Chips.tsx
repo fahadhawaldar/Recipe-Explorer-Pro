@@ -13,7 +13,7 @@ const Chips = ({ onPress, text, isSelected }: Props) => {
   return (
     <Pressable style={styles.chip} onPress={onPress}>
       <Text
-        style={[styles.chipText, { color: isSelected ? "red" : "#252525" }]}
+        style={[styles.chipText, { color: isSelected ? "#28a745" : "#252525" }]}
       >
         {text}
       </Text>

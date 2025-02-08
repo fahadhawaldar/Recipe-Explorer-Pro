@@ -5,8 +5,7 @@ export const signOut = async () => {
   const auth = getAuth();
   try {
     await auth.signOut();
-    // After signing out, router will automatically redirect to login
-    // because of the auth state change listener in index.tsx
+    router.replace("/(auth)/login");
   } catch (error) {
     console.error("Error signing out:", error);
   }

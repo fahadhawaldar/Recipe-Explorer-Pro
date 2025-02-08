@@ -1,24 +1,57 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { RecipeTypes } from "@/src/types";
+
 export interface RecipeState {
-  recipes: {
-    id: string;
-    name: string;
-    ingredients: string[];
-    instructions: string[];
-  }[];
+  recipes: RecipeTypes[];
+  createdRecipes: RecipeTypes[];
+
+  favoriteRecipies: number[];
 }
 
 const initialState: RecipeState = {
   recipes: [],
+  favoriteRecipies: [],
+  createdRecipes: [],
 };
 
 export const recipesSlice = createSlice({
   name: "recipes",
   initialState,
   reducers: {
+    addFavoriteRecipe: (state, action: { payload: number }) => {
+      const id = action.payload;
+      const aleadyExistIndex = state.favoriteRecipies.findIndex(
+        (fId) => fId === id
+      );
+
+      if (aleadyExistIndex !== -1) {
+        state.favoriteRecipies = state.favoriteRecipies.filter(
+          (Fid) => Fid !== id
+        );
+      } else {
+        state.favoriteRecipies.push(id);
+      }
+    },
+    addRecipes: (
+      state,
+      action: { payload: { data: RecipeTypes[]; isExtra?: boolean } }
+    ) => {
+      const res = action.payload.data;
+      const isExtra = action.payload.isExtra;
+      if (isExtra) {
+        console.log("cong");
+
+        state.recipes = state.recipes.concat(res);
+        return;
+      }
+      state.recipes = res;
+    },
     addRecipe: (state, action) => {
-      state.recipes.push(action.payload);
+      state.recipes.unshift(action.payload);
+      console.log(action.payload);
+
+      state.createdRecipes.push(action.payload);
     },
     removeRecipe: (state, action) => {
       state.recipes = state.recipes.filter(
@@ -28,7 +61,8 @@ export const recipesSlice = createSlice({
   },
 });
 
-export const { addRecipe, removeRecipe } = recipesSlice.actions;
+export const { addRecipe, removeRecipe, addFavoriteRecipe, addRecipes } =
+  recipesSlice.actions;
 
-export const selectRecipes = (state: RecipeState) => state.recipes;
+export const selectRecipes = (state: any): RecipeState => state.recipes;
 export default recipesSlice.reducer;

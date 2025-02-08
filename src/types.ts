@@ -1,18 +1,18 @@
 export type RecipeTypes = {
   id: number;
   name: string;
-  image: string;
-  cuisine: string;
-  mealType: string[];
-  tags: string[];
-  difficulty: "Easy" | "Medium" | "Hard";
+  ingredients: string[];
+  instructions: string[];
   prepTimeMinutes: number;
   cookTimeMinutes: number;
   servings: number;
+  difficulty: string;
+  cuisine: string;
   caloriesPerServing: number;
-  ingredients: string[];
-  instructions: string[];
+  tags: string[];
+  userId: number;
+  image: string;
   rating: number;
   reviewCount: number;
-  userId: number;
+  mealType: string[];
 };

@@ -1,11 +1,14 @@
-import { StyleSheet, Text, TextProps, useColorScheme } from "react-native";
+import { StyleSheet, Text, TextProps } from "react-native";
 import React from "react";
+import { darkColor, lightColor } from "../utils/color";
+import { useSelector } from "react-redux";
 
 type Props = TextProps;
 
 const StyledText = (props: Props) => {
-  const colorScheme = useColorScheme();
-  const textColor = colorScheme === "dark" ? "#fff" : "#000";
+  const isDark = useSelector((state: any) => state.appSettings.darkMode);
+
+  const textColor = isDark ? lightColor : darkColor;
   const customStyle = props.style
     ? { ...props.style, color: textColor }
     : { color: textColor };

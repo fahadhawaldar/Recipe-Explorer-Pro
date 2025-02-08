@@ -2,10 +2,13 @@ import { Redirect } from "expo-router";
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { View, ActivityIndicator } from "react-native";
+import { useDispatch } from "react-redux";
+import { setUser as setRUser } from "@/src/store/slices/authSlice";
 
 export default function Index() {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     const auth = getAuth();
@@ -31,6 +34,7 @@ export default function Index() {
 
   // Redirect based on authentication state
   if (user) {
+    dispatch(setRUser(user));
     // If user is logged in, redirect to home screen
     return <Redirect href="/(tabs)/home" />;
   } else {

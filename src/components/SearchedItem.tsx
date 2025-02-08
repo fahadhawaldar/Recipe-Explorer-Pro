@@ -4,6 +4,7 @@ import { RecipeTypes } from "../types";
 import StyledView from "./StyledView";
 import StyledText from "./StyledText";
 import { router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 type Props = {
   meal: RecipeTypes;
@@ -25,7 +26,17 @@ const SearchedItem = ({ meal }: Props) => {
             {meal.name}
           </StyledText>
           <StyledText>{meal.mealType}</StyledText>
-          <StyledText>⭐️ {meal.rating}</StyledText>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 5,
+              // justifyContent: "center",
+            }}
+          >
+            <Ionicons name="star" size={18} color="#FBA518" />
+            <StyledText>{meal.rating}</StyledText>
+          </View>
           <StyledText> Cooking Time: {meal.prepTimeMinutes} minutes</StyledText>
         </StyledView>
       </Pressable>

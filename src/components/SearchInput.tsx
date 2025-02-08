@@ -1,13 +1,9 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  useColorScheme,
-} from "react-native";
+import { StyleSheet, TextInput } from "react-native";
 import React from "react";
 import StyledView from "./StyledView";
 import StyledText from "./StyledText";
+import { useSelector } from "react-redux";
+import { darkColor, lightColor } from "../utils/color";
 
 type Props = {
   searchText: string;
@@ -15,13 +11,14 @@ type Props = {
 };
 
 const SearchInput = ({ searchText, setSearchText }: Props) => {
-  const textColor = useColorScheme() === "dark" ? "#fff" : "#000";
-  const backgroundColor = useColorScheme() === "dark" ? "#000" : "#fff";
+  const isDark = useSelector((state: any) => state.appSettings.darkMode);
+  const textColor = isDark ? lightColor : darkColor;
+  const backgroundColor = isDark ? darkColor : lightColor;
   return (
     <StyledView style={styles.container}>
       <StyledText style={styles.text}>Search</StyledText>
       <TextInput
-        ref={(node) => node?.focus()}
+        // ref={(node) => node?.focus()}
         value={searchText}
         onChangeText={setSearchText}
         style={[

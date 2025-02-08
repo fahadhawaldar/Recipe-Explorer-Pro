@@ -1,5 +1,7 @@
 import { StyleSheet, View, ViewStyle, useColorScheme } from "react-native";
 import React from "react";
+import { darkColor, lightColor } from "../utils/color";
+import { useSelector } from "react-redux";
 
 type Props = {
   children: JSX.Element | JSX.Element[] | any;
@@ -7,13 +9,13 @@ type Props = {
 };
 
 const StyledView = (props: Props) => {
-  const colorScheme = useColorScheme();
+  const isDark = useSelector((state: any) => state.appSettings.darkMode);
 
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor: colorScheme === "dark" ? "#000" : "#F5FCFF" },
+        { backgroundColor: isDark ? darkColor : lightColor },
         props.style,
       ]}
     >

@@ -1,12 +1,13 @@
 import { Stack } from "expo-router";
 // firebaseConfig.js
 import { initializeApp } from "firebase/app";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { store } from "../src/store/index";
 import { getReactNativePersistence, initializeAuth } from "firebase/auth";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useColorScheme } from "react-native";
+import { setUser } from "../src/store/slices/authSlice";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDGc72C8VfvsADaTilJNOcpLDefbOT8psg",
@@ -24,22 +25,8 @@ export const auth = initializeAuth(app, {
 });
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   const screenOptions = {
     headerShown: false,
-    tabBarStyle: {
-      backgroundColor: colorScheme === "dark" ? "#000" : "#fff",
-    },
-    tabBarLabelStyle: {
-      color: colorScheme === "dark" ? "#fff" : "#333",
-    },
-    tabBarActiveTintColor: colorScheme === "dark" ? "#fff" : "#333",
-    tabBarInactiveTintColor: colorScheme === "dark" ? "#fff" : "#333",
-    headerTintColor: colorScheme === "dark" ? "#fff" : "#333",
-    headerStyle: {
-      backgroundColor: colorScheme === "dark" ? "#000" : "#fff",
-    },
   };
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -49,15 +36,17 @@ export default function RootLayout() {
     return unsubscribe;
   }, []);
   return (
-    <Stack screenOptions={screenOptions}>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="[id]"
-        options={{
-          presentation: "modal",
-          headerTitle: "Recipe Details",
-        }}
-      />
-    </Stack>
+    <Provider store={store}>
+      <Stack screenOptions={screenOptions}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="[id]"
+          options={{
+            presentation: "modal",
+            headerTitle: "Recipe Details",
+          }}
+        />
+      </Stack>
+    </Provider>
   );
 }

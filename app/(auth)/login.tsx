@@ -4,17 +4,21 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Alert,
   StyleSheet,
   KeyboardAvoidingView,
-  ImageBackground,
   Platform,
+  Alert,
+  useColorScheme,
+  Image,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../_layout";
+import { accentColor, darkColor, lightColor } from "@/src/utils/color";
+import StyledText from "@/src/components/StyledText";
 
 export default function LoginScreen() {
+  const isDark = useColorScheme() === "dark";
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,90 +43,121 @@ export default function LoginScreen() {
   };
 
   return (
-    <ImageBackground
-      // source={require("../../assets/images/login-background.jpg")}
-      style={{
-        width: "100%",
-        height: "100%",
-      }}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      style={[
+        styles.container,
+        { backgroundColor: isDark ? darkColor : lightColor },
+      ]}
     >
-      {/* <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1 }}
-      > */}
-      <View style={styles.container}>
-        <View style={styles.form}>
-          <Text style={styles.title}>Login</Text>
+      <View style={styles.form}>
+        <Image
+          style={styles.image}
+          source={require("../../assets/images/Login.jpg")}
+        />
+        <Text style={[styles.logo, { color: accentColor }]}>
+          Recipe Explorer Pro
+        </Text>
+        <StyledText style={styles.title}>Login</StyledText>
 
-          <TextInput
-            // ref={(node) => node && node.focus()}
-            placeholder="Email"
-            style={styles.input}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            value={email}
-            onChangeText={setEmail}
-          />
+        <TextInput
+          placeholder="Email"
+          style={[styles.input, { color: isDark ? "#fff" : "#333" }]}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+        />
 
-          <TextInput
-            placeholder="Password"
-            style={styles.input}
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
-          />
+        <TextInput
+          placeholder="Password"
+          style={[styles.input, { color: isDark ? "#fff" : "#333" }]}
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleLogin}
-            disabled={loading}
-          >
-            <Text style={styles.buttonText}>
-              {loading ? "Logging in..." : "Login"}
-            </Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleLogin}
+          disabled={loading}
+        >
+          <Text style={styles.buttonText}>
+            {loading ? "Logging in..." : "Login"}
+          </Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => router.push("/(auth)/signup")}>
-            <Text style={styles.link}>Don't have an account? Sign up</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={() => router.replace("/(auth)/signup")}>
+          <Text style={styles.link}>Don't have an account? Sign up</Text>
+        </TouchableOpacity>
       </View>
-      {/* </KeyboardAvoidingView> */}
-    </ImageBackground>
+    </KeyboardAvoidingView>
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#fff",
-    // backgroundColor: "rgba(221, 202, 202, 0.28)",
   },
   form: {
     width: "100%",
     // flex: 1,
     padding: 20,
     borderRadius: 8,
+    // backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
   },
-
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
   input: {
     width: "100%",
     padding: 10,
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderRadius: 8,
     marginBottom: 10,
+    borderColor: accentColor,
   },
   button: {
-    backgroundColor: "#007bff",
+    backgroundColor: accentColor,
     padding: 10,
     borderRadius: 8,
     width: "100%",
     alignItems: "center",
   },
-  buttonText: { color: "#fff", fontSize: 16 },
-  link: { marginTop: 10, color: "#007bff" },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+  },
+  link: {
+    marginTop: 10,
+    color: accentColor,
+  },
+  logo: {
+    fontSize: 24,
+    fontWeight: "bold",
+    // marginBottom: 20,
+  },
+  image: {
+    width: 250,
+    height: 250,
+    borderRadius: "50%",
+    borderWidth: 10,
+    borderColor: accentColor,
+    alignSelf: "center",
+    marginBottom: 20,
+    // }
+  },
 });

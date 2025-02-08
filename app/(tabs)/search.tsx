@@ -1,6 +1,7 @@
 import {
   ActivityIndicator,
   FlatList,
+  Keyboard,
   StyleSheet,
   Text,
   View,
@@ -43,6 +44,10 @@ const SearchScreen = (props: Props) => {
       {isLoading ? <ActivityIndicator size="large" /> : null}
 
       <FlatList
+        onMomentumScrollEnd={() => Keyboard.dismiss()}
+        // onScroll={() => {
+        //   Keyboard.dismiss();
+        // }}
         style={{ paddingHorizontal: 20 }}
         contentContainerStyle={{ gap: 20 }}
         data={recipes}
