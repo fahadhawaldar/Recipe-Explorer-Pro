@@ -8,7 +8,7 @@ import {
   ScrollView,
   StyleSheet,
   Alert,
-  useColorScheme,
+  Text,
   Keyboard,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
@@ -17,7 +17,7 @@ import StyledView from "@/src/components/StyledView";
 import StyledText from "@/src/components/StyledText";
 import { Ionicons } from "@expo/vector-icons";
 import { RecipeTypes } from "@/src/types";
-import { recipeService } from "@/src/services/recipeService";
+
 import { useDispatch, useSelector } from "react-redux";
 import { addRecipe } from "@/src/store/slices/recipesSlice";
 import { router } from "expo-router";
@@ -32,7 +32,7 @@ const RecipeForm = () => {
 
   const [instructionText, setInstructionText] = useState("");
   const defaultRecipe = {
-    id: Math.floor(Math.random() * 1000),
+    id: Math.floor(Math.random() * 10000) + 1,
     name: "",
     ingredients: [],
     instructions: [],
@@ -102,7 +102,7 @@ const RecipeForm = () => {
 
       const newRecipe = {
         ...recipe,
-        id: Date.now().toString(),
+        // id: Date.now().toString(),
         createdAt: new Date().toISOString(),
       };
 
@@ -214,8 +214,9 @@ const RecipeForm = () => {
         )}
 
         <TouchableOpacity style={styles.saveButton} onPress={saveRecipe}>
-          <StyledText style={styles.saveButtonText}>Save Recipe</StyledText>
+          <Text style={styles.saveButtonText}>Save Recipe</Text>
         </TouchableOpacity>
+        <View style={{ height: 100 }} />
       </ScrollView>
     </StyledView>
   );
@@ -262,6 +263,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     marginVertical: 15,
+    // borderWidth: 0.5,
   },
   imageButtonText: {
     color: "#007AFF",

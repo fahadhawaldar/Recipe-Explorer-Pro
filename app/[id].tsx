@@ -16,29 +16,41 @@ import axios from "axios";
 import { mealDbAPI } from "@/src/utils/constants";
 import { Fontisto, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { addFavoriteRecipe } from "@/src/store/slices/recipesSlice";
+import {
+  addFavoriteRecipe,
+  selectRecipes,
+} from "@/src/store/slices/recipesSlice";
+import { accentColor } from "@/src/utils/color";
 
 const DetailsScreen = () => {
   const dispatch = useDispatch();
-  const { id } = useLocalSearchParams(); // Get dynamic route param
+  const { id }: { id: any } = useLocalSearchParams(); // Get dynamic route param
   const [recipe, setRecipe] = useState<RecipeTypes | null>(null);
   const [loading, setLoading] = useState(true);
-  const allRecipes = useSelector((state: any) => state.recipes.recipes);
+  const recipeData = useSelector(selectRecipes);
+  const allRecipes = recipeData.recipes;
+  const allCreatedRecipes = recipeData.createdRecipes;
+  const fovoriteRecipes = recipeData.favoriteRecipies;
 
   useEffect(() => {
     // Fetch recipe details using the API
     // ...
     async function fetchRecipeDetails() {
       try {
-        const res = await axios.get(mealDbAPI + "/" + id);
+        const validId =
+          id === "fallback" ? "" + Math.floor(Math.random() * 30) + 1 : id;
+
+        const res = await axios.get(mealDbAPI + "/" + validId);
 
         setRecipe(res.data);
         setLoading(false);
       } catch (error) {
-        console.log("Error fetching recipe details:", error);
         const findRecipe =
-          allRecipes.find((recipe: any) => {
-            return recipe.id === id;
+          allRecipes.concat(allCreatedRecipes).find((recipe: any) => {
+            if (recipe.id == id) {
+            }
+
+            return recipe.id == id;
           }) || null;
 
         setRecipe(findRecipe);
@@ -50,7 +62,7 @@ const DetailsScreen = () => {
     fetchRecipeDetails();
   }, []);
 
-  function addToFav() {
+  function addToFav(id: number) {
     dispatch(addFavoriteRecipe(id));
   }
 
@@ -69,12 +81,14 @@ const DetailsScreen = () => {
           }}
         >
           <StyledText style={styles.title}>{recipe?.name}</StyledText>
-          <Pressable onPress={addToFav}>
+          <Pressable onPress={addToFav.bind(null, parseInt(id))}>
             <View>
               <Fontisto
-                name={true ? "heart" : "heart-alt"}
+                name={
+                  fovoriteRecipes.includes(parseInt(id)) ? "heart" : "heart-alt"
+                }
                 size={24}
-                color={"red"}
+                color={accentColor}
               />
             </View>
           </Pressable>
@@ -156,6 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+    color: accentColor,
   },
 });
 export default DetailsScreen;

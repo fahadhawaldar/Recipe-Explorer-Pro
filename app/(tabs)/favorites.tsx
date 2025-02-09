@@ -10,6 +10,7 @@ import {
 import { RecipeTypes } from "@/src/types";
 import { Fontisto, MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { accentColor } from "@/src/utils/color";
 
 type Props = {};
 
@@ -52,17 +53,27 @@ const FavoritesScreen = (props: Props) => {
           </StyledText>
         </View>
       </View>
-      <Fontisto
-        onPress={() => changeFavorite(item.id)}
-        name={favoriteRecipes.includes(item.id) ? "heart" : "heart-alt"}
-        size={24}
-        color={"red"}
-      />
+      <Pressable
+        onPress={() => {
+          changeFavorite(item.id);
+        }}
+      >
+        <Fontisto
+          // disabled
+
+          name={favoriteRecipes.includes(item.id) ? "heart" : "heart-alt"}
+          size={24}
+          color={accentColor}
+        />
+      </Pressable>
     </Pressable>
   );
   return (
     <StyledView style={{ flex: 1, paddingHorizontal: 20 }}>
       <StyledText style={styles.heading}>Your Favorite Recipes </StyledText>
+      {favoriteMeals.length === 0 && (
+        <StyledText style={styles.mesage}>No Favorite Recipes</StyledText>
+      )}
       <FlatList data={favoriteMeals} renderItem={renderItem} />
     </StyledView>
   );
@@ -91,5 +102,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
+  },
+  mesage: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

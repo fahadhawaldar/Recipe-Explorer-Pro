@@ -16,9 +16,10 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../_layout";
 import { accentColor, darkColor, lightColor } from "@/src/utils/color";
 import StyledText from "@/src/components/StyledText";
+import { useSelector } from "react-redux";
 
 export default function LoginScreen() {
-  const isDark = useColorScheme() === "dark";
+  const isDark = useSelector((state: any) => state.appSettings.darkMode);
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -108,14 +109,6 @@ export const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 8,
     // backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
   },
   title: {
     fontSize: 24,
@@ -153,7 +146,7 @@ export const styles = StyleSheet.create({
   image: {
     width: 250,
     height: 250,
-    borderRadius: "50%",
+    borderRadius: 200,
     borderWidth: 10,
     borderColor: accentColor,
     alignSelf: "center",

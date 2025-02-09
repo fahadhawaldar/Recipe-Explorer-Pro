@@ -18,21 +18,29 @@
     "android": {
       "package": "com.fahadhawaldar.recipeexplorerpro",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/icon.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
@@ -41,9 +49,17 @@
       [
         "expo-notifications",
         {
-          "icon": "./local/path/to/your/notification-icon.png",
+          "icon": "./assets/images/splash-icon.png",
           "color": "#ffffff",
-          "sounds": ["./local/path/to/your/notification-sound.wav"]
+          "sounds": [
+            "./assets/sounds/notification.wav"
+          ]
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to add photos to your recipes."
         }
       ]
     ],
@@ -58,6 +74,12 @@
         "projectId": "f8c8f1b0-6cae-4f3a-ba73-ac46b7c43ca3"
       }
     },
-    "owner": "fahaddevl"
+    "owner": "fahaddevl",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/f8c8f1b0-6cae-4f3a-ba73-ac46b7c43ca3"
+    }
   }
 }

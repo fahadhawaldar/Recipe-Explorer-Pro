@@ -22,7 +22,7 @@ import { router, useNavigation } from "expo-router";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { Entypo, Ionicons, Octicons } from "@expo/vector-icons";
 import { setDarkMode } from "@/src/store/slices/appSettingSlice";
-import { RecipeNotificationManager } from "@/src/services/recipeNotificationManager";
+import { RecipeNotificationManager } from "@/src/services/RecipeNotificationManager";
 type Props = {};
 
 const sortRecipes = (
@@ -65,7 +65,6 @@ const Home = (props: Props) => {
   });
 
   function toggleDarkMode() {
-    console.log(!isDarkMode);
     reduxDispatcher(setDarkMode(!isDarkMode));
   }
 
@@ -136,7 +135,6 @@ const Home = (props: Props) => {
       const filtered = allRecipes.filter((recipe) =>
         recipe.mealType.includes(selectedFilter)
       );
-      console.log(sortOrder.id === -1);
 
       if (sortOrder.id === -1) {
         setFilteredRecipes(filtered);
@@ -225,7 +223,6 @@ const Home = (props: Props) => {
               axios
                 .get(`${mealDbAPI}?limit=20&page=${nextPage}`)
                 .then((res) => {
-                  console.log(res.data.recipes);
                   // reduxDispatcher(addRecipes({ data: res.data.recipes }));
 
                   reduxDispatcher(

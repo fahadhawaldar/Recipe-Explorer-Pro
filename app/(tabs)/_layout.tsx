@@ -1,6 +1,6 @@
 // app/(app)/(tabs)/_layout.tsx
 import { Tabs } from "expo-router";
-import { Pressable, useColorScheme } from "react-native";
+import { Platform, Pressable, useColorScheme } from "react-native";
 import { MaterialIcons, Octicons, SimpleLineIcons } from "@expo/vector-icons";
 import { accentColor, darkColor, lightColor } from "@/src/utils/color";
 import StyledView from "@/src/components/StyledView";
@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 
 export default function TabsLayout() {
   const colorScheme = useSelector((state: any) => state.appSettings.darkMode);
-  console.log(colorScheme);
 
   return (
     <Tabs
@@ -28,7 +27,7 @@ export default function TabsLayout() {
           left: 0,
           right: 0,
           bottom: 0,
-          height: 70,
+          height: Platform.OS === "ios" ? 70 : undefined,
           // paddingTop: 10,
         },
         tabBarLabelStyle: {

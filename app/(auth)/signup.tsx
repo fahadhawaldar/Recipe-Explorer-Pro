@@ -20,9 +20,10 @@ import { auth } from "../_layout";
 import { accentColor, darkColor, lightColor } from "@/src/utils/color";
 import StyledText from "@/src/components/StyledText";
 import { styles } from "./login";
+import { useSelector } from "react-redux";
 
 export default function SignUpScreen() {
-  const isDark = useColorScheme() === "dark";
+  const isDark = useSelector((state: any) => state.appSettings.darkMode);
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

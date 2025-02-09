@@ -7,16 +7,23 @@ import { accentColor } from "@/src/utils/color";
 
 export default function Profile() {
   const user = useSelector((state: any) => state.auth.user);
-  const PhotoUri =
-    user.photoURL ??
-    "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
+  // const PhotoUri =
+  //   ;
+
+  // console.log(PhotoUri);
 
   return (
     <StyledView style={styles.container}>
       <StyledText style={styles.title}>Profile</StyledText>
       {user && (
         <View style={styles.profileInfo}>
-          <Image source={{ uri: PhotoUri }} style={styles.avatar} />
+          <Image
+            // resizeMode="cover"
+            source={{
+              uri: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+            }}
+            style={styles.avatar}
+          />
           <StyledText style={styles.name}>{user.displayName}</StyledText>
           <StyledText style={styles.email}>{user.email}</StyledText>
         </View>

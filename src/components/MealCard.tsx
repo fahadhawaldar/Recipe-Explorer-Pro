@@ -14,6 +14,7 @@ import { router } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { addFavoriteRecipe } from "../store/slices/recipesSlice";
+import { accentColor } from "../utils/color";
 
 type Props = {
   meal: RecipeTypes;
@@ -24,7 +25,7 @@ const MealCard = ({ meal, isFav = false }: Props) => {
   const reduxDispatch = useDispatch();
 
   function addToFav() {
-    reduxDispatch(addFavoriteRecipe(meal.id));
+    reduxDispatch(addFavoriteRecipe(parseInt(meal.id)));
   }
   return (
     <Pressable
@@ -34,7 +35,19 @@ const MealCard = ({ meal, isFav = false }: Props) => {
       style={styles.main}
     >
       <>
-        <Image style={styles.image} source={{ uri: meal.image }} />
+        <View>
+          <Image style={styles.image} source={{ uri: meal.image }} />
+          <View style={styles.floatBottom}>
+            <MaterialCommunityIcons
+              name="clock-time-two-outline"
+              size={24}
+              color="#252525"
+            />
+            <Text style={{ fontSize: 12, color: "#252525" }}>
+              {meal.prepTimeMinutes} minutes
+            </Text>
+          </View>
+        </View>
         <View>
           <StyledText style={styles.title}>{meal.name}</StyledText>
 
@@ -47,18 +60,10 @@ const MealCard = ({ meal, isFav = false }: Props) => {
             <Fontisto
               name={isFav ? "heart" : "heart-alt"}
               size={24}
-              color={"red"}
+              color={accentColor}
             />
           </View>
         </Pressable>
-        <View style={styles.floatBottom}>
-          <MaterialCommunityIcons
-            name="clock-time-two-outline"
-            size={24}
-            color="#252525"
-          />
-          <StyledText>{meal.prepTimeMinutes} minutes</StyledText>
-        </View>
       </>
     </Pressable>
   );
@@ -95,13 +100,14 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   floatBottom: {
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
     position: "absolute",
-    bottom: 40,
+    bottom: 10,
     right: 10,
     gap: 10,
     flexDirection: "row",
     alignItems: "center",
-    boxShadow: "0 25px 25px rgba(0, 0, 0, 0.10)",
+    borderRadius: 50,
   },
   heart: {
     backgroundColor: "rgba(255, 255, 255, 0.5)",

@@ -21,6 +21,7 @@ export const recipesSlice = createSlice({
   reducers: {
     addFavoriteRecipe: (state, action: { payload: number }) => {
       const id = action.payload;
+
       const aleadyExistIndex = state.favoriteRecipies.findIndex(
         (fId) => fId === id
       );
@@ -40,8 +41,6 @@ export const recipesSlice = createSlice({
       const res = action.payload.data;
       const isExtra = action.payload.isExtra;
       if (isExtra) {
-        console.log("cong");
-
         state.recipes = state.recipes.concat(res);
         return;
       }
@@ -49,7 +48,6 @@ export const recipesSlice = createSlice({
     },
     addRecipe: (state, action) => {
       state.recipes.unshift(action.payload);
-      console.log(action.payload);
 
       state.createdRecipes.push(action.payload);
     },

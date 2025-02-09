@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import StyledView from "./StyledView";
 import StyledText from "./StyledText";
+import { accentColor } from "../utils/color";
 
 type Props = {
   text: string;
@@ -13,7 +14,10 @@ const Chips = ({ onPress, text, isSelected }: Props) => {
   return (
     <Pressable style={styles.chip} onPress={onPress}>
       <Text
-        style={[styles.chipText, { color: isSelected ? "#28a745" : "#252525" }]}
+        style={[
+          styles.chipText,
+          { color: isSelected ? accentColor : "#252525" },
+        ]}
       >
         {text}
       </Text>

@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { mealDbAPI } from "../utils/constants";
 import { RecipeTypes } from "../types";
+import { router } from "expo-router";
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -43,8 +44,11 @@ export const RecipeNotificationManager = () => {
       const response = await axios.get(
         mealDbAPI + `/${Math.floor(Math.random() * 30) + 1}`
       );
+      if (!response.data) {
+        throw new Error("No recipes found");
+      }
 
-      return response;
+      return response.data;
     } catch (error) {
       console.error("Error fetching recipe:", error);
       return {
@@ -62,12 +66,14 @@ export const RecipeNotificationManager = () => {
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "🍳 Today's Recipe Suggestion",
-        body: `Try making ${recipe.name}! ${recipe.instructions.join("\n")}`,
+        body: `Try making ${recipe?.name}! \n ${recipe?.instructions.join(
+          "\n"
+        )}`,
         data: { recipeId: recipe.id },
       },
       trigger: {
         hour: 12,
-        minute: 30,
+        minute: 57,
         repeats: true,
         type: "daily",
       } as Notifications.NotificationTriggerInput,
@@ -82,7 +88,7 @@ export const RecipeNotificationManager = () => {
       (response) => {
         const recipeId = response.notification.request.content.data.recipeId;
         // Navigate to recipe details or handle tap
-        console.log("Notification tapped:", recipeId);
+        router.push(`/${recipeId}`);
       }
     );
 

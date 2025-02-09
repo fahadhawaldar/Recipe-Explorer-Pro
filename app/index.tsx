@@ -12,7 +12,7 @@ export default function Index() {
 
   useEffect(() => {
     const auth = getAuth();
-
+    setUser(user);
     // Listen for authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);

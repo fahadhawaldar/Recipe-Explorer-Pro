@@ -42,6 +42,13 @@ const SearchScreen = (props: Props) => {
     <StyledView style={styles.container}>
       <SearchInput searchText={searchText} setSearchText={setSearchText} />
       {isLoading ? <ActivityIndicator size="large" /> : null}
+      {recipes.length === 0 && !isLoading ? (
+        <StyledText
+          style={{ textAlign: "center", marginTop: 20, fontSize: 16 }}
+        >
+          No recipes found
+        </StyledText>
+      ) : null}
 
       <FlatList
         onMomentumScrollEnd={() => Keyboard.dismiss()}

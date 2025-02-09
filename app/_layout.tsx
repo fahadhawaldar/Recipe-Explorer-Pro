@@ -29,9 +29,7 @@ export default function RootLayout() {
     headerShown: false,
   };
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      console.log("Auth state changed:", user?.email);
-    });
+    const unsubscribe = auth.onAuthStateChanged((user) => {});
 
     return unsubscribe;
   }, []);
